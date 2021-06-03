@@ -1,0 +1,17 @@
+{
+  "name": "phaser-tilemap-post-5-04-platformer-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.html",
+  "scripts": {
+    "dev": "parcel serve src/index.html"
+  },
+  "dependencies": {
+    "matter-js": "^0.17.1",
+    "phaser": "3.16.2",
+    "phaser-matter-collision-plugin": "0.10.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.27.0"
+  }
+}
