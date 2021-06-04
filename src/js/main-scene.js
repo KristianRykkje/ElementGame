@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import Player from "./player.js";
-import levelJson from "../assets/tilemaps/level4.json";
+import levelJson from "../assets/tilemaps/level5.json";
 import kenneyTilset64pxExtruded from "../assets/tilesets/kenney-tileset-64px.png";
 import images from "../assets/images/*.png";
 import emojiPng from "../assets/atlases/emoji.png";
@@ -61,6 +61,24 @@ export default class MainScene extends Phaser.Scene {
       fill: "#000000",
     });
     help.setScrollFactor(0).setDepth(1000);
+
+    this.matter.world.createDebugGraphic();
+    this.matter.world.drawDebug = false;
+    this.input.keyboard.on("keydown-H", event => {
+      console.log(event);
+      this.matter.world.drawDebug = !this.matter.world.drawDebug;
+      this.matter.world.debugGraphic.clear();
+    });
+
+    const helptext =
+      'Left-click to emoji.\nArrows to scroll.\nPress "H" to see Matter bodies.';
+    const helptextItem = this.add.text(16, 16, helptext, {
+      fontSize: "18px",
+      padding: { x: 10, y: 5 },
+      backgroundColor: "#ffffff",
+      fill: "#000000",
+    });
+    helptextItem.setScrollFactor(0).setDepth(1000);
   }
 
   onPlayerCollide({ gameObjectB }) {
