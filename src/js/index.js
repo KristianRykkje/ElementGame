@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin";
 import MainScene from "./main-scene.js";
+import SecondScene from "./second-scene.js";
 
 const config = {
   type: Phaser.AUTO,
@@ -8,9 +9,12 @@ const config = {
   height: 600,
   backgroundColor: "#000c1f",
   parent: "game-container",
-  scene: MainScene,
+  scene: [MainScene, SecondScene],
   pixelArt: true,
-  physics: { default: "matter" },
+  physics: {
+    default: "matter",
+    matter: { debug: { showbody: true, showStaticBody: true } },
+  },
   plugins: {
     scene: [
       {

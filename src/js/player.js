@@ -46,13 +46,17 @@ export default class Player {
 
     const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
     const { width: w, height: h } = this.sprite;
-    const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, {
+    const mainBody = Bodies.rectangle(w / 2, h / 2, w * 0.6, h, {
       chamfer: { radius: 10 },
     });
     this.sensors = {
-      bottom: Bodies.rectangle(0, h * 0.5, w * 0.25, 2, { isSensor: true }),
-      left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
-      right: Bodies.rectangle(w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
+      bottom: Bodies.rectangle(w / 2, h, w * 0.25, 2, { isSensor: true }),
+      left: Bodies.rectangle(0.35, h / 2, 2, h * 0.5, {
+        isSensor: true,
+      }),
+      right: Bodies.rectangle(w, h / 2, 2, h * 0.5, {
+        isSensor: true,
+      }),
     };
     const compoundBody = Body.create({
       parts: [
@@ -67,7 +71,7 @@ export default class Player {
     });
     this.sprite
       .setExistingBody(compoundBody)
-      .setScale(2)
+      .setScale(4)
       .setFixedRotation() // Sets inertia to infinity so the player can't rotate
       .setPosition(x, y);
 

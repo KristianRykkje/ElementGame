@@ -1,21 +1,20 @@
 import Phaser from "phaser";
 import Player from "./player.js";
-import levelJson5 from "../assets/tilemaps/level5.json";
-import kenneyTilset64pxExtruded5 from "../assets/tilesets/kenney-tileset-64px-extruded.png";
+import levelJsonx from "../assets/tilemaps/levelx.json";
+import kenneyTilset64pxExtrudedx from "../assets/tilesets/kenney-tileset-64px-extruded.png";
 import images from "../assets/images/*.png";
 import emojiPng from "../assets/atlases/emoji.png";
 import emojiJson from "../assets/atlases/emoji.json";
 import industrialPlayer from "../assets/spritesheets/0x72-industrial-player-32px-extruded.png";
-import firePlayer from "../assets/spritesheets/fire_elemental_sprite_sheet.png";
 
-export default class MainScene extends Phaser.Scene {
+export default class SecondScene extends Phaser.Scene {
   constructor() {
-    super({ key: "scene1" });
+    super({ key: "scene2" });
   }
 
   preload() {
-    this.load.tilemapTiledJSON("map5", levelJson5);
-    this.load.image("kenney-tileset-64px-extruded5", kenneyTilset64pxExtruded5);
+    this.load.tilemapTiledJSON("mapx", levelJsonx);
+    this.load.image("kenney-tileset-64px-extrudedx", kenneyTilset64pxExtrudedx);
 
     this.load.image("wooden-plank", images.wooden_plank);
     this.load.image("block", images.block);
@@ -31,13 +30,12 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
-    const map = this.make.tilemap({ key: "map5" });
+    const map = this.make.tilemap({ key: "mapx" });
     const tileset = map.addTilesetImage(
       "kenney-tileset-64px-extruded",
-      "kenney-tileset-64px-extruded5",
+      "kenney-tileset-64px-extrudedx",
     );
-
-    const groundLayer = map.createLayer("Ground", tileset, 0, 0);
+    const groundLayer = map.createLayer("Ground", tileset);
 
     // Set colliding tiles before converting the layer to Matter bodies
     groundLayer.setCollisionByProperty({ collides: true });
@@ -72,7 +70,7 @@ export default class MainScene extends Phaser.Scene {
     help.setScrollFactor(0).setDepth(1000);
 
     this.matter.world.createDebugGraphic();
-    this.matter.world.drawDebug = true;
+    this.matter.world.drawDebug = false;
     this.input.keyboard.on("keydown-H", event => {
       console.log(event);
       this.matter.world.drawDebug = !this.matter.world.drawDebug;
@@ -93,10 +91,18 @@ export default class MainScene extends Phaser.Scene {
     this.input.once(
       "pointerdown",
       function (event) {
-        this.scene.start("scene2");
+        this.scene.start("scene1");
       },
       this,
     );
+
+    this.matter.world.createDebugGraphic();
+    this.matter.world.drawDebug = true;
+    this.input.keyboard.on("keydown-H", event => {
+      console.log(event);
+      this.matter.world.drawDebug = !this.matter.world.drawDebug;
+      this.matter.world.debugGraphic.clear();
+    });
   }
 
   onPlayerCollide({ gameObjectB }) {
