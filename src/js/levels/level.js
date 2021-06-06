@@ -86,7 +86,7 @@ export default class LevelScene extends Phaser.Scene {
 
     this.matter.world.createDebugGraphic();
     this.matter.world.drawDebug = false;
-    this.input.keyboard.on("keydown-H", event => {
+    this.input.keyboard.on("keydown-H", () => {
       this.matter.world.drawDebug = !this.matter.world.drawDebug;
       this.matter.world.debugGraphic.clear();
     });
