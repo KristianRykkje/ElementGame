@@ -51,10 +51,10 @@ export default class Player {
     });
     this.sensors = {
       bottom: Bodies.rectangle(w / 2, h, w * 0.25, 2, { isSensor: true }),
-      left: Bodies.rectangle(0.35, h / 2, 2, h * 0.5, {
+      left: Bodies.rectangle(w * 0.15, h / 2, 2, h * 0.5, {
         isSensor: true,
       }),
-      right: Bodies.rectangle(w, h / 2, 2, h * 0.5, {
+      right: Bodies.rectangle(w * 0.85, h / 2, 2, h * 0.5, {
         isSensor: true,
       }),
     };
@@ -71,7 +71,7 @@ export default class Player {
     });
     this.sprite
       .setExistingBody(compoundBody)
-      .setScale(4)
+      .setScale(2)
       .setFixedRotation() // Sets inertia to infinity so the player can't rotate
       .setPosition(x, y);
 
