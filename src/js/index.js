@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin";
 import Level1 from "./levels/level1.js";
 import Level2 from "./levels/level2.js";
+import TitleScene from "./title-scene.js";
 
 const levels = [Level1, Level2];
 
@@ -11,7 +12,7 @@ const config = {
   height: 600,
   backgroundColor: "#000c1f",
   parent: "game-container",
-  scene: [...levels],
+  scene: [TitleScene, ...levels],
   pixelArt: true,
   physics: {
     default: "matter",
