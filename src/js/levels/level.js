@@ -55,6 +55,9 @@ export default class LevelScene extends Phaser.Scene {
     const { x, y } = map.findObject("Spawn", obj => obj.name === "Spawn Point");
     this.player = new Player(this, x, y);
 
+    // Smoothly follow the player
+    this.cameras.main.startFollow(this.player.sprite, false, 0.5, 0.5);
+
     // The exit point
     // Create a sensor at rectangle object created in Tiled (under the "Sensors" layer)
     const rect = map.findObject("Sensors", obj => obj.name === "Exitdoor");
@@ -75,48 +78,28 @@ export default class LevelScene extends Phaser.Scene {
       context: this,
     });
 
-    // Smoothly follow the player
-    this.cameras.main.startFollow(this.player.sprite, false, 0.5, 0.5);
-
     this.unsubscribePlayerCollide = this.matterCollision.addOnCollideStart({
       objectA: this.player.sprite,
       callback: this.onPlayerCollide,
       context: this,
     });
 
-    const help = this.add.text(16, 16, "Arrows/WASD to move the player.", {
-      fontSize: "18px",
-      padding: { x: 10, y: 5 },
-      backgroundColor: "#ffffff",
-      fill: "#000000",
-    });
-    help.setScrollFactor(0).setDepth(1000);
-
     this.matter.world.createDebugGraphic();
     this.matter.world.drawDebug = false;
     this.input.keyboard.on("keydown-H", event => {
-      console.log(event);
       this.matter.world.drawDebug = !this.matter.world.drawDebug;
       this.matter.world.debugGraphic.clear();
     });
 
-    const helptext =
-      'Left-click to emoji.\nArrows to scroll.\nPress "H" to see Matter bodies.';
-    const helptextItem = this.add.text(16, 16, helptext, {
+    const help =
+      'Arrows/WASD to move the player.\nPress "H" to see Matter bodies.';
+    const helptext = this.add.text(16, 16, help, {
       fontSize: "18px",
       padding: { x: 10, y: 5 },
       backgroundColor: "#ffffff",
       fill: "#000000",
     });
-    helptextItem.setScrollFactor(0).setDepth(1000);
-
-    this.matter.world.createDebugGraphic();
-    this.matter.world.drawDebug = true;
-    this.input.keyboard.on("keydown-H", event => {
-      console.log(event);
-      this.matter.world.drawDebug = !this.matter.world.drawDebug;
-      this.matter.world.debugGraphic.clear();
-    });
+    helptext.setScrollFactor(0).setDepth(1000);
   }
 
   onPlayerCollide({ gameObjectB }) {
@@ -152,6 +135,7 @@ export default class LevelScene extends Phaser.Scene {
           friction: 0,
           density: 0.0001,
           shape: "circle",
+          bounce: 1,
         })
         .setScale(0.5);
     }
