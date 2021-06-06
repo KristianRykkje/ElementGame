@@ -3,13 +3,15 @@ import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin";
 import Level1 from "./levels/level1.js";
 import Level2 from "./levels/level2.js";
 
+const levels = [Level1, Level2];
+
 const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
   backgroundColor: "#000c1f",
   parent: "game-container",
-  scene: [Level1, Level2],
+  scene: [...levels],
   pixelArt: true,
   physics: {
     default: "matter",
