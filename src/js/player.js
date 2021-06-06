@@ -67,7 +67,6 @@ export default class Player {
       ],
       frictionStatic: 0,
       frictionAir: 0.02,
-      friction: 0.1,
     });
     this.sprite
       .setExistingBody(compoundBody)

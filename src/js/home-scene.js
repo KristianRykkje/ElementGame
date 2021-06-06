@@ -1,17 +1,17 @@
 import Phaser from "phaser";
-import Player from "../player.js";
-import homeJson from "../../assets/tilemaps/home.json";
-import kenneyTilset64pxExtrudedx from "../../assets/tilesets/kenney-tileset-64px-extruded.png";
-import industrialPlayer from "../../assets/spritesheets/0x72-industrial-player-32px-extruded.png";
+import Player from "./player.js";
+import homeJson from "../assets/tilemaps/homeLevel.json";
+import kenneyTilset64pxExtrudedx from "../assets/tilesets/kenney-tileset-64px-extruded.png";
+import industrialPlayer from "../assets/spritesheets/0x72-industrial-player-32px-extruded.png";
 
 export default class HomeScene extends Phaser.Scene {
-  constructor(key) {
-    super({ key });
-    this.key = key;
+  constructor() {
+    super({ key: "homeLevel" });
+    this.key = "homeLevel";
   }
 
   preload() {
-    this.load.tilemapTiledJSON("home", homeJson);
+    this.load.tilemapTiledJSON(this.key, homeJson);
     this.load.image("kenney-tileset-64px-extrudedx", kenneyTilset64pxExtrudedx);
 
     this.load.spritesheet("player", industrialPlayer, {
@@ -30,13 +30,13 @@ export default class HomeScene extends Phaser.Scene {
     );
 
     const groundLayer = map.createLayer("Ground", tileset);
-    const foregroundLayer = map.createLayer("Foreground", tileset);
+    // const foregroundLayer = map.createLayer("Foreground", tileset);
 
     groundLayer.setCollisionByProperty({ collides: true });
-    foregroundLayer.setCollisionByProperty({ collides: true });
+    // foregroundLayer.setCollisionByProperty({ collides: true });
 
     this.matter.world.convertTilemapLayer(groundLayer);
-    this.matter.world.convertTilemapLayer(foregroundLayer);
+    // this.matter.world.convertTilemapLayer(foregroundLayer);
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.matter.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -48,23 +48,25 @@ export default class HomeScene extends Phaser.Scene {
 
     // -----------------------------------------------
 
-    const rect = map.findObject("Sensors", obj => obj.name === "Exitdoor");
-    const celebrateSensor = this.matter.add.rectangle(
-      rect.x + rect.width / 2,
-      rect.y + rect.height / 2,
-      rect.width,
-      rect.height,
-      {
-        isSensor: true,
-        isStatic: true,
-      },
-    );
-    this.unsubscribeCelebrate = this.matterCollision.addOnCollideStart({
-      objectA: this.player.sprite,
-      objectB: celebrateSensor,
-      callback: this.onPlayerWin,
-      context: this,
-    });
+    // const rect = map.findObject("Sensors", obj => obj.name === "Exitdoor");
+    // const celebrateSensor = this.matter.add.rectangle(
+    //   rect.x + rect.width / 2,
+    //   rect.y + rect.height / 2,
+    //   rect.width,
+    //   rect.height,
+    //   {
+    //     isSensor: true,
+    //     isStatic: true,
+    //   },
+    // );
+    // this.unsubscribeCelebrate = this.matterCollision.addOnCollideStart({
+    //   objectA: this.player.sprite,
+    //   objectB: celebrateSensor,
+    //   callback: this.onPlayerWin,
+    //   context: this,
+    // });
+
+    // -----------------------------------------------
 
     this.matter.world.createDebugGraphic();
     this.matter.world.drawDebug = false;
@@ -72,8 +74,6 @@ export default class HomeScene extends Phaser.Scene {
       this.matter.world.drawDebug = !this.matter.world.drawDebug;
       this.matter.world.debugGraphic.clear();
     });
-
-    // -----------------------------------------------
 
     const help =
       'Arrows/WASD to move the player.\nPress "H" to see Matter bodies.';

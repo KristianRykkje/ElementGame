@@ -29,7 +29,7 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   startGameButton() {
-    this.scene.start("level1");
+    this.scene.start("homeLevel");
   }
 
   optionsButton() {
