@@ -36,14 +36,17 @@ export default class SecondScene extends Phaser.Scene {
       "kenney-tileset-64px-extrudedx",
     );
     const groundLayer = map.createLayer("Ground", tileset);
+    const foregroundLayer = map.createLayer("Foreground", tileset, 0, 0);
 
     // Set colliding tiles before converting the layer to Matter bodies
     groundLayer.setCollisionByProperty({ collides: true });
+    foregroundLayer.setCollisionByProperty({ collides: true });
 
     // Get the layers registered with Matter. Any colliding tiles will be given a Matter body. We
     // haven't mapped our collision shapes in Tiled so each colliding tile will get a default
     // rectangle body (similar to AP).
     this.matter.world.convertTilemapLayer(groundLayer);
+    this.matter.world.convertTilemapLayer(foregroundLayer);
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.matter.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -51,6 +54,26 @@ export default class SecondScene extends Phaser.Scene {
     // The spawn point is set using a point object inside of Tiled (within the "Spawn" object layer)
     const { x, y } = map.findObject("Spawn", obj => obj.name === "Spawn Point");
     this.player = new Player(this, x, y);
+
+    // The exit point
+    // Create a sensor at rectangle object created in Tiled (under the "Sensors" layer)
+    const rect = map.findObject("Sensors", obj => obj.name === "Exitdoor");
+    const celebrateSensor = this.matter.add.rectangle(
+      rect.x + rect.width / 2,
+      rect.y + rect.height / 2,
+      rect.width,
+      rect.height,
+      {
+        isSensor: true, // It shouldn't physically interact with other bodies
+        isStatic: true, // It shouldn't move
+      },
+    );
+    this.unsubscribeCelebrate = this.matterCollision.addOnCollideStart({
+      objectA: this.player.sprite,
+      objectB: celebrateSensor,
+      callback: this.onPlayerWin,
+      context: this,
+    });
 
     // Smoothly follow the player
     this.cameras.main.startFollow(this.player.sprite, false, 0.5, 0.5);
@@ -141,5 +164,6 @@ export default class SecondScene extends Phaser.Scene {
         })
         .setScale(0.5);
     }
+    setTimeout(() => this.scene.start("scene1"), 500);
   }
 }

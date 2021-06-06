@@ -6,8 +6,6 @@ import images from "../assets/images/*.png";
 import emojiPng from "../assets/atlases/emoji.png";
 import emojiJson from "../assets/atlases/emoji.json";
 import industrialPlayer from "../assets/spritesheets/0x72-industrial-player-32px-extruded.png";
-import firePlayer from "../assets/spritesheets/fire_elemental_sprite_sheet.png";
-
 export default class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: "scene1" });
@@ -38,14 +36,17 @@ export default class MainScene extends Phaser.Scene {
     );
 
     const groundLayer = map.createLayer("Ground", tileset, 0, 0);
+    const foregroundLayer = map.createLayer("Foreground", tileset, 0, 0);
 
     // Set colliding tiles before converting the layer to Matter bodies
     groundLayer.setCollisionByProperty({ collides: true });
+    foregroundLayer.setCollisionByProperty({ collides: true });
 
     // Get the layers registered with Matter. Any colliding tiles will be given a Matter body. We
     // haven't mapped our collision shapes in Tiled so each colliding tile will get a default
     // rectangle body (similar to AP).
     this.matter.world.convertTilemapLayer(groundLayer);
+    this.matter.world.convertTilemapLayer(foregroundLayer);
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.matter.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -53,6 +54,26 @@ export default class MainScene extends Phaser.Scene {
     // The spawn point is set using a point object inside of Tiled (within the "Spawn" object layer)
     const { x, y } = map.findObject("Spawn", obj => obj.name === "Spawn Point");
     this.player = new Player(this, x, y);
+
+    // The exit point
+    // Create a sensor at rectangle object created in Tiled (under the "Sensors" layer)
+    const rect = map.findObject("Sensors", obj => obj.name === "Exitdoor");
+    const celebrateSensor = this.matter.add.rectangle(
+      rect.x + rect.width / 2,
+      rect.y + rect.height / 2,
+      rect.width,
+      rect.height,
+      {
+        isSensor: true, // It shouldn't physically interact with other bodies
+        isStatic: true, // It shouldn't move
+      },
+    );
+    this.unsubscribeCelebrate = this.matterCollision.addOnCollideStart({
+      objectA: this.player.sprite,
+      objectB: celebrateSensor,
+      callback: this.onPlayerWin,
+      context: this,
+    });
 
     // Smoothly follow the player
     this.cameras.main.startFollow(this.player.sprite, false, 0.5, 0.5);
@@ -74,7 +95,6 @@ export default class MainScene extends Phaser.Scene {
     this.matter.world.createDebugGraphic();
     this.matter.world.drawDebug = true;
     this.input.keyboard.on("keydown-H", event => {
-      console.log(event);
       this.matter.world.drawDebug = !this.matter.world.drawDebug;
       this.matter.world.debugGraphic.clear();
     });
@@ -88,15 +108,6 @@ export default class MainScene extends Phaser.Scene {
       fill: "#000000",
     });
     helptextItem.setScrollFactor(0).setDepth(1000);
-
-    this.input.manager.enabled = true;
-    this.input.once(
-      "pointerdown",
-      function (event) {
-        this.scene.start("scene2");
-      },
-      this,
-    );
   }
 
   onPlayerCollide({ gameObjectB }) {
@@ -135,5 +146,6 @@ export default class MainScene extends Phaser.Scene {
         })
         .setScale(0.5);
     }
+    setTimeout(() => this.scene.start("scene2"), 500);
   }
 }
