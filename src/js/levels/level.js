@@ -1,19 +1,19 @@
 import Phaser from "phaser";
-import Player from "./player.js";
-import levelJson5 from "../assets/tilemaps/level5.json";
-import kenneyTilset64pxExtruded5 from "../assets/tilesets/kenney-tileset-64px-extruded.png";
-import images from "../assets/images/*.png";
-import emojiPng from "../assets/atlases/emoji.png";
-import emojiJson from "../assets/atlases/emoji.json";
-import industrialPlayer from "../assets/spritesheets/0x72-industrial-player-32px-extruded.png";
-export default class MainScene extends Phaser.Scene {
-  constructor() {
-    super({ key: "scene1" });
+import Player from "../player.js";
+import kenneyTilset64pxExtrudedx from "../../assets/tilesets/kenney-tileset-64px-extruded.png";
+import images from "../../assets/images/*.png";
+import emojiPng from "../../assets/atlases/emoji.png";
+import emojiJson from "../../assets/atlases/emoji.json";
+import industrialPlayer from "../../assets/spritesheets/0x72-industrial-player-32px-extruded.png";
+
+export default class LevelScene extends Phaser.Scene {
+  constructor(key) {
+    super({ key });
+    this.key = key;
   }
 
   preload() {
-    this.load.tilemapTiledJSON("map5", levelJson5);
-    this.load.image("kenney-tileset-64px-extruded5", kenneyTilset64pxExtruded5);
+    this.load.image("kenney-tileset-64px-extrudedx", kenneyTilset64pxExtrudedx);
 
     this.load.image("wooden-plank", images.wooden_plank);
     this.load.image("block", images.block);
@@ -29,14 +29,14 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
-    const map = this.make.tilemap({ key: "map5" });
+    const map = this.make.tilemap({ key: this.key });
     const tileset = map.addTilesetImage(
       "kenney-tileset-64px-extruded",
-      "kenney-tileset-64px-extruded5",
+      "kenney-tileset-64px-extrudedx",
     );
 
     const groundLayer = map.createLayer("Ground", tileset);
-    const foregroundLayer = map.createLayer("Foreground", tileset, 0, 0);
+    const foregroundLayer = map.createLayer("Foreground", tileset);
 
     // Set colliding tiles before converting the layer to Matter bodies
     groundLayer.setCollisionByProperty({ collides: true });
@@ -93,8 +93,9 @@ export default class MainScene extends Phaser.Scene {
     help.setScrollFactor(0).setDepth(1000);
 
     this.matter.world.createDebugGraphic();
-    this.matter.world.drawDebug = true;
+    this.matter.world.drawDebug = false;
     this.input.keyboard.on("keydown-H", event => {
+      console.log(event);
       this.matter.world.drawDebug = !this.matter.world.drawDebug;
       this.matter.world.debugGraphic.clear();
     });
@@ -108,6 +109,14 @@ export default class MainScene extends Phaser.Scene {
       fill: "#000000",
     });
     helptextItem.setScrollFactor(0).setDepth(1000);
+
+    this.matter.world.createDebugGraphic();
+    this.matter.world.drawDebug = true;
+    this.input.keyboard.on("keydown-H", event => {
+      console.log(event);
+      this.matter.world.drawDebug = !this.matter.world.drawDebug;
+      this.matter.world.debugGraphic.clear();
+    });
   }
 
   onPlayerCollide({ gameObjectB }) {
@@ -146,6 +155,6 @@ export default class MainScene extends Phaser.Scene {
         })
         .setScale(0.5);
     }
-    setTimeout(() => this.scene.start("scene2"), 500);
+    setTimeout(() => this.scene.start("level2"), 500);
   }
 }
