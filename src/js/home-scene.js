@@ -3,6 +3,7 @@ import Player from "./player.js";
 import homeJson from "../assets/tilemaps/homeLevel.json";
 import kenneyTilset64pxExtrudedx from "../assets/tilesets/kenney-tileset-64px-extruded.png";
 import industrialPlayer from "../assets/spritesheets/0x72-industrial-player-32px-extruded.png";
+import fireElement from "../assets/spritesheets/FireElement.png";
 
 export default class HomeScene extends Phaser.Scene {
   constructor() {
@@ -19,6 +20,12 @@ export default class HomeScene extends Phaser.Scene {
       frameHeight: 32,
       margin: 1,
       spacing: 2,
+    });
+    this.load.spritesheet("fireElement", fireElement, {
+      frameWidth: 32,
+      frameHeight: 32,
+      margin: 0,
+      spacing: 0,
     });
   }
 

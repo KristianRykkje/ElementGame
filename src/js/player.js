@@ -9,8 +9,8 @@ export default class Player {
     const anims = scene.anims;
     anims.create({
       key: "player-idle",
-      frames: anims.generateFrameNumbers("player", { start: 0, end: 3 }),
-      frameRate: 3,
+      frames: anims.generateFrameNumbers("fireElement", { start: 0, end: 2 }),
+      frameRate: 8,
       repeat: -1,
     });
     anims.create({
@@ -70,7 +70,6 @@ export default class Player {
     });
     this.sprite
       .setExistingBody(compoundBody)
-      .setScale(2)
       .setFixedRotation() // Sets inertia to infinity so the player can't rotate
       .setPosition(x, y);
 
