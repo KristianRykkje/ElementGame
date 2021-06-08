@@ -4,6 +4,9 @@ import homeJson from "../assets/tilemaps/homeLevel.json";
 import kenneyTilset64pxExtrudedx from "../assets/tilesets/kenney-tileset-64px-extruded.png";
 import industrialPlayer from "../assets/spritesheets/0x72-industrial-player-32px-extruded.png";
 import fireElement from "../assets/spritesheets/FireElement.png";
+import fireElementIdle from "../assets/spritesheets/fire/FireElementIdle.png";
+import fireElementJump from "../assets/spritesheets/fire/FireElementJump.png";
+import fireElementRunning from "../assets/spritesheets/fire/FireElementRunning.png";
 
 export default class HomeScene extends Phaser.Scene {
   constructor() {
@@ -22,6 +25,24 @@ export default class HomeScene extends Phaser.Scene {
       spacing: 2,
     });
     this.load.spritesheet("fireElement", fireElement, {
+      frameWidth: 32,
+      frameHeight: 32,
+      margin: 0,
+      spacing: 0,
+    });
+    this.load.spritesheet("fireElementIdle", fireElementIdle, {
+      frameWidth: 32,
+      frameHeight: 32,
+      margin: 0,
+      spacing: 1,
+    });
+    this.load.spritesheet("fireElementRunning", fireElementRunning, {
+      frameWidth: 32,
+      frameHeight: 32,
+      margin: 0,
+      spacing: 0,
+    });
+    this.load.spritesheet("fireElementJump", fireElementJump, {
       frameWidth: 32,
       frameHeight: 32,
       margin: 0,

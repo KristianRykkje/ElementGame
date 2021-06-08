@@ -9,19 +9,25 @@ export default class Player {
     const anims = scene.anims;
     anims.create({
       key: "player-idle",
-      frames: anims.generateFrameNumbers("fireElement", { start: 0, end: 2 }),
+      frames: anims.generateFrameNumbers("fireElementIdle", {
+        start: 0,
+        end: 2,
+      }),
       frameRate: 8,
       repeat: -1,
     });
     anims.create({
       key: "player-run",
-      frames: anims.generateFrameNumbers("player", { start: 8, end: 15 }),
+      frames: anims.generateFrameNumbers("fireElementRunning", {
+        start: 0,
+        end: 3,
+      }),
       frameRate: 12,
       repeat: -1,
     });
 
     // Create the physics-based sprite that we will move around and animate
-    this.sprite = scene.matter.add.sprite(0, 0, "player", 0);
+    this.sprite = scene.matter.add.sprite(0, 0, "fireElementIdle", 0);
 
     // The player's body is going to be a compound body that looks something like this:
     //
@@ -70,6 +76,7 @@ export default class Player {
     });
     this.sprite
       .setExistingBody(compoundBody)
+      .setScale(2)
       .setFixedRotation() // Sets inertia to infinity so the player can't rotate
       .setPosition(x, y);
 
@@ -95,10 +102,12 @@ export default class Player {
     });
 
     // Track the keys
-    const { LEFT, RIGHT, UP, A, D, W } = Phaser.Input.Keyboard.KeyCodes;
+    const { LEFT, RIGHT, UP, DOWN, A, D, W, S } =
+      Phaser.Input.Keyboard.KeyCodes;
     this.leftInput = new MultiKey(scene, [LEFT, A]);
     this.rightInput = new MultiKey(scene, [RIGHT, D]);
     this.jumpInput = new MultiKey(scene, [UP, W]);
+    this.crouchInput = new MultiKey(scene, [DOWN, S]);
 
     this.destroyed = false;
     this.scene.events.on("update", this.update, this);
@@ -144,6 +153,7 @@ export default class Player {
     const isRightKeyDown = this.rightInput.isDown();
     const isLeftKeyDown = this.leftInput.isDown();
     const isJumpKeyDown = this.jumpInput.isDown();
+    const isCrouchKeyDown = this.crouchInput.isDown();
     const isOnGround = this.isTouching.ground;
     const isInAir = !isOnGround;
 
@@ -188,13 +198,18 @@ export default class Player {
       });
     }
 
-    // Update the animation/texture based on the state of the player's state
+    // if (isOnGround && ) {
+    //   sprite.anims.stop();
+    // }
     if (isOnGround) {
+      // Update the animation/texture based on the state of the player's state
       if (sprite.body.force.x !== 0) sprite.anims.play("player-run", true);
-      else sprite.anims.play("player-idle", true);
+      else if (isCrouchKeyDown && velocity.x < 1) {
+        sprite.anims.stop();
+        sprite.setTexture("fireElementJump", 1);
+      } else sprite.anims.play("player-idle", true);
     } else {
-      sprite.anims.stop();
-      sprite.setTexture("player", 10);
+      sprite.setTexture("fireElementJump", 0);
     }
   }
 
