@@ -198,9 +198,6 @@ export default class Player {
       });
     }
 
-    // if (isOnGround && ) {
-    //   sprite.anims.stop();
-    // }
     if (isOnGround) {
       // Update the animation/texture based on the state of the player's state
       if (sprite.body.force.x !== 0) sprite.anims.play("player-run", true);
