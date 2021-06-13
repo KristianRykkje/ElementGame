@@ -4,6 +4,8 @@ import MultiKey from "./multi-key.js";
 export default class Player {
   constructor(scene, x, y) {
     this.scene = scene;
+    this.height = this.scene.game.config.height;
+    this.width = this.scene.game.config.width;
 
     // Create the animations we need from the player spritesheet
     const anims = scene.anims;
@@ -117,18 +119,17 @@ export default class Player {
 
     this.joyStick = this.scene.rexVirtualJoystick
       .add(this.scene, {
-        x: 400,
-        y: 300,
-        radius: 100,
-        base: this.scene.add.circle(0, 0, 100, 0x888888),
-        thumb: this.scene.add.circle(0, 0, 50, 0xcccccc),
+        x: 60,
+        y: this.height - 60,
+        radius: 50,
+        base: this.scene.add.circle(0, 0, 40, 0x888888, 0.5),
+        thumb: this.scene.add.circle(0, 0, 20, 0xcccccc, 0.8),
         // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
         // forceMin: 16,
         // enable: true
       })
       .on("update", this.dumpJoyStickState, this);
 
-    this.scene.text = this.scene.add.text(0, 0);
     this.dumpJoyStickState();
   }
 
