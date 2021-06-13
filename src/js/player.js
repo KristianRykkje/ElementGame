@@ -112,6 +112,38 @@ export default class Player {
     this.scene.events.on("update", this.update, this);
     this.scene.events.once("shutdown", this.destroy, this);
     this.scene.events.once("destroy", this.destroy, this);
+
+    console.log(this.scene);
+
+    this.joyStick = this.scene.rexVirtualJoystick
+      .add(this.scene, {
+        x: 400,
+        y: 300,
+        radius: 100,
+        base: this.scene.add.circle(0, 0, 100, 0x888888),
+        thumb: this.scene.add.circle(0, 0, 50, 0xcccccc),
+        // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
+        // forceMin: 16,
+        // enable: true
+      })
+      .on("update", this.dumpJoyStickState, this);
+
+    this.scene.text = this.scene.add.text(0, 0);
+    this.dumpJoyStickState();
+  }
+
+  dumpJoyStickState() {
+    var cursorKeys = this.joyStick.createCursorKeys();
+    var s = "Key down: ";
+    for (var name in cursorKeys) {
+      if (cursorKeys[name].isDown) {
+        s += name + " ";
+      }
+    }
+    s += "\n";
+    s += "Force: " + Math.floor(this.joyStick.force * 100) / 100 + "\n";
+    s += "Angle: " + Math.floor(this.joyStick.angle * 100) / 100 + "\n";
+    console.log(s);
   }
 
   onSensorCollide({ bodyA, bodyB, pair }) {

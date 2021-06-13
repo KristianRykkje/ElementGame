@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+
 import Player from "./player.js";
 import homeJson from "../assets/tilemaps/homeLevel.json";
 import kenneyTilset64pxExtrudedx from "../assets/tilesets/kenney-tileset-64px-extruded.png";
