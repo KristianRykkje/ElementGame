@@ -9,25 +9,25 @@ export default class Player {
     const anims = scene.anims;
     anims.create({
       key: "player-idle",
-      frames: anims.generateFrameNumbers("fireElementIdle", {
-        start: 0,
-        end: 2,
-      }),
-      frameRate: 8,
-      repeat: -1,
-    });
-    anims.create({
-      key: "player-run",
-      frames: anims.generateFrameNumbers("fireElementRunning", {
+      frames: anims.generateFrameNumbers("templatePlayer", {
         start: 0,
         end: 3,
       }),
       frameRate: 12,
       repeat: -1,
     });
+    anims.create({
+      key: "player-run",
+      frames: anims.generateFrameNumbers("templatePlayer", {
+        start: 4,
+        end: 7,
+      }),
+      frameRate: 12,
+      repeat: -1,
+    });
 
     // Create the physics-based sprite that we will move around and animate
-    this.sprite = scene.matter.add.sprite(0, 0, "fireElementIdle", 0);
+    this.sprite = scene.matter.add.sprite(0, 0, "templatePlayer", 0);
 
     // The player's body is going to be a compound body that looks something like this:
     //
@@ -202,10 +202,14 @@ export default class Player {
       if (sprite.body.force.x !== 0) sprite.anims.play("player-run", true);
       else if (isCrouchKeyDown && velocity.x < 1) {
         sprite.anims.stop();
-        sprite.setTexture("fireElementJump", 1);
+        sprite.setTexture("templatePlayer", 3);
       } else sprite.anims.play("player-idle", true);
     } else {
-      sprite.setTexture("fireElementJump", 0);
+      if (sprite.body.velocity.y > 0) {
+        sprite.setTexture("templatePlayer", 9);
+      } else {
+        sprite.setTexture("templatePlayer", 8);
+      }
     }
   }
 
