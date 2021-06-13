@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin";
 import VirtualJoystickPlugin from "phaser3-rex-plugins/plugins/virtualjoystick-plugin";
+import ButtonPlugin from "phaser3-rex-plugins/plugins/button-plugin";
 
 import Level1 from "./levels/level1";
 import Level2 from "./levels/level2";
@@ -36,6 +37,12 @@ const config = {
         plugin: VirtualJoystickPlugin,
         key: "rexVirtualJoystick",
         mapping: "rexVirtualJoystick",
+        start: true,
+      },
+      {
+        plugin: ButtonPlugin,
+        key: "rexButton",
+        mapping: "rexButton",
         start: true,
       },
     ],

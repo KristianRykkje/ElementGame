@@ -122,29 +122,25 @@ export default class Player {
         radius: 50,
         base: this.scene.add.circle(0, 0, 40, 0x888888, 0.5),
         thumb: this.scene.add.circle(0, 0, 20, 0xcccccc, 0.8),
-        // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
-        // forceMin: 16,
-        // enable: true
+        dir: 1, // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
+        forceMin: 16,
       })
-      .on("update", this.dumpJoyStickState, this);
+      .on("update", this.updateJoyStickState, this);
 
-    this.dumpJoyStickState();
+    this.updateJoyStickState();
 
-    console.log(this.joyStick);
+    this.button = this.scene.add
+      .text(200, 200, "##################################")
+      .setColor("#fafa5d")
+      .setFontSize(40);
+    this.button.setInteractive();
+    console.log(this.button);
   }
 
-  dumpJoyStickState() {
-    var cursorKeys = this.joyStick.createCursorKeys();
-    var s = "Key down: ";
-    for (var name in cursorKeys) {
-      if (cursorKeys[name].isDown) {
-        s += name + " ";
-      }
-    }
-    s += "\n";
-    s += "Force: " + Math.floor(this.joyStick.force * 100) / 100 + "\n";
-    s += "Angle: " + Math.floor(this.joyStick.angle * 100) / 100 + "\n";
-    console.log(s);
+  updateJoyStickState() {
+    const cursorKeys = this.joyStick.createCursorKeys();
+    this.joyStickLeft = cursorKeys.left.isDown;
+    this.joyStickRight = cursorKeys.right.isDown;
   }
 
   onSensorCollide({ bodyA, bodyB, pair }) {
@@ -182,8 +178,8 @@ export default class Player {
 
     const sprite = this.sprite;
     const velocity = sprite.body.velocity;
-    const isRightKeyDown = this.rightInput.isDown();
-    const isLeftKeyDown = this.leftInput.isDown();
+    const isRightKeyDown = this.rightInput.isDown() || this.joyStickRight;
+    const isLeftKeyDown = this.leftInput.isDown() || this.joyStickLeft;
     const isJumpKeyDown = this.jumpInput.isDown();
     const isCrouchKeyDown = this.crouchInput.isDown();
     const isOnGround = this.isTouching.ground;
