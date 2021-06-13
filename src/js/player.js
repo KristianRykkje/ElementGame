@@ -7,6 +7,7 @@ export default class Player {
     this.scene = scene;
     this.height = this.scene.game.config.height;
     this.width = this.scene.game.config.width;
+    this.jumpButtonPressed = false;
 
     // Create the animations we need from the player spritesheet
     const anims = scene.anims;
@@ -130,8 +131,12 @@ export default class Player {
 
     this.updateJoyStickState();
 
-    this.button = new Button(200, 200, "Start Game", this.scene, () =>
-      console.log("game is started"),
+    this.button = new Button(
+      this.width - 60,
+      this.height - 60,
+      "A",
+      this.scene,
+      () => (this.jumpButtonPressed = true),
     );
   }
 
@@ -178,7 +183,7 @@ export default class Player {
     const velocity = sprite.body.velocity;
     const isRightKeyDown = this.rightInput.isDown() || this.joyStickRight;
     const isLeftKeyDown = this.leftInput.isDown() || this.joyStickLeft;
-    const isJumpKeyDown = this.jumpInput.isDown();
+    const isJumpKeyDown = this.jumpInput.isDown() || this.jumpButtonPressed;
     const isCrouchKeyDown = this.crouchInput.isDown();
     const isOnGround = this.isTouching.ground;
     const isInAir = !isOnGround;
@@ -238,6 +243,7 @@ export default class Player {
         sprite.setTexture("templatePlayer", 8);
       }
     }
+    this.jumpButtonPressed = false;
   }
 
   destroy() {
