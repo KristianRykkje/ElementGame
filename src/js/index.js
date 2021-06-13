@@ -11,14 +11,14 @@ const levels = [Level1, Level2];
 
 const config = {
   type: Phaser.AUTO,
-  mode: Phaser.Scale.RESIZE,
-  autoCenter: Phaser.Scale.CENTER_BOTH,
-  width: 800,
-  height: 500,
-  min: { width: 600, height: 300 },
-  max: { width: 1400, height: 1200 },
+  scale: {
+    mode: Phaser.Scale.NONE,
+    parent: "game-container",
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: window.innerWidth,
+    height: window.innerHeight,
+  },
   backgroundColor: "#000c1f",
-  parent: "game-container",
   scene: [TitleScene, HomeScene, ...levels],
   pixelArt: true,
   physics: {
@@ -42,4 +42,8 @@ const config = {
   },
 };
 
-new Phaser.Game(config);
+const phaserGame = new Phaser.Game(config);
+
+addEventListener("resize", () => {
+  phaserGame.scale.resize(window.innerWidth, window.innerHeight);
+});
