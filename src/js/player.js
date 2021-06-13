@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import Button from "./Button.js";
 import MultiKey from "./multi-key.js";
 
 export default class Player {
@@ -129,12 +130,9 @@ export default class Player {
 
     this.updateJoyStickState();
 
-    this.button = this.scene.add
-      .text(200, 200, "##################################")
-      .setColor("#fafa5d")
-      .setFontSize(40);
-    this.button.setInteractive();
-    console.log(this.button);
+    this.button = new Button(200, 200, "Start Game", this.scene, () =>
+      console.log("game is started"),
+    );
   }
 
   updateJoyStickState() {
