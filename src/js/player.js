@@ -115,8 +115,6 @@ export default class Player {
     this.scene.events.once("shutdown", this.destroy, this);
     this.scene.events.once("destroy", this.destroy, this);
 
-    console.log(this.scene);
-
     this.joyStick = this.scene.rexVirtualJoystick
       .add(this.scene, {
         x: 60,
@@ -131,6 +129,8 @@ export default class Player {
       .on("update", this.dumpJoyStickState, this);
 
     this.dumpJoyStickState();
+
+    console.log(this.joyStick);
   }
 
   dumpJoyStickState() {
