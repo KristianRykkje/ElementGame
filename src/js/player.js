@@ -101,7 +101,6 @@ export default class Player {
       context: this,
     });
 
-    // Track the keys
     const { LEFT, RIGHT, UP, DOWN, A, D, W, S } =
       Phaser.Input.Keyboard.KeyCodes;
     this.leftInput = new MultiKey(scene, [LEFT, A]);
