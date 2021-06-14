@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.html",
   "scripts": {
-    "build": "parcel build src/index.html --no-minify",
+    "build": "npx parcel build src/index.html --no-minify",
     "dev": "parcel serve src/index.html"
   },
   "dependencies": {
