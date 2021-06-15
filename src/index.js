@@ -3,10 +3,10 @@ import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin";
 import VirtualJoystickPlugin from "phaser3-rex-plugins/plugins/virtualjoystick-plugin";
 import ButtonPlugin from "phaser3-rex-plugins/plugins/button-plugin";
 
-import Level1 from "./levels/level1";
-import Level2 from "./levels/level2";
-import TitleScene from "./title-scene";
-import HomeScene from "./home-scene";
+import Level1 from "./js/levels/level1";
+import Level2 from "./js/levels/level2";
+import TitleScene from "./js/title-scene";
+import HomeScene from "./js/home-scene";
 
 const levels = [Level1, Level2];
 
