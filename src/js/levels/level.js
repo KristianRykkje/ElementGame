@@ -1,8 +1,6 @@
 import Phaser from "phaser";
 import Player from "../player.js";
 import kenneyTilset64pxExtrudedx from "../../assets/tilesets/kenney-tileset-64px-extruded.png";
-import emojiPng from "../../assets/atlases/emoji.png";
-import emojiJson from "../../assets/atlases/emoji.json";
 import industrialPlayer from "../../assets/spritesheets/0x72-industrial-player-32px-extruded.png";
 
 export default class LevelScene extends Phaser.Scene {
@@ -20,8 +18,6 @@ export default class LevelScene extends Phaser.Scene {
       margin: 1,
       spacing: 2,
     });
-
-    this.load.atlas("emoji", emojiPng, emojiJson);
   }
 
   create() {
